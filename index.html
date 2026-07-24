@@ -1,0 +1,173 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="author" content="David Lee Wise / ROOT0 / TriPod LLC">
+<title>THE FAIR DIVISION · LILLITH · UD0</title>
+<style>
+*{box-sizing:border-box}
+:root{--crim:#c0392b;--crim2:#8f2a20;--gold:#c8a24a;--gold2:#9c7a2a;--ink:#2a2530;--dim:#6b6472;
+  --grn:#2e8b57;--blue:#3a6ea5;--panel:rgba(255,255,255,.74);--edge:rgba(192,57,43,.24);--edge2:rgba(192,57,43,.12)}
+html,body{margin:0;height:100%}
+body{background:#eef0f3;color:var(--ink);font:15px/1.55 'Segoe UI',system-ui,-apple-system,Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+#bg{position:fixed;inset:0;width:100vw;height:100vh;z-index:0;display:block}
+.desk{position:relative;z-index:2;max-width:900px;margin:0 auto;padding:24px 16px 56px}
+.dtag{font:600 11px/1 ui-monospace,'Cascadia Code','Segoe UI Mono',monospace;letter-spacing:.34em;text-transform:uppercase;color:var(--crim2)}
+.dtag b{color:var(--crim)}
+h1{margin:.35em 0 .1em;font-size:clamp(26px,4.6vw,42px);font-weight:800;letter-spacing:.01em;color:#241f2b}
+.sub{color:var(--dim);max-width:66ch;margin:.2em 0 0}
+.drag{display:inline-block;margin-left:10px;font:700 10px/1 ui-monospace,monospace;letter-spacing:.14em;color:var(--gold2);border:1px solid var(--gold);border-radius:999px;padding:4px 9px;vertical-align:middle}
+.tier{display:inline-flex;gap:6px;align-items:center;margin-top:14px;font:600 11px/1 ui-monospace,monospace;letter-spacing:.14em}
+.chip{padding:5px 10px;border-radius:999px;border:1px solid var(--edge);background:var(--panel)}
+.chip.lit{color:var(--grn);border-color:rgba(46,139,87,.4)}
+.chip.amb{color:var(--gold2);border-color:rgba(156,122,42,.5)}
+.card{margin-top:20px;background:var(--panel);border:1px solid var(--edge);border-radius:16px;backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px);box-shadow:0 14px 44px rgba(120,40,32,.12)}
+.stagewrap{padding:14px}
+#stage{width:100%;height:auto;display:block;border-radius:10px;background:rgba(255,255,255,.66);border:1px solid var(--edge2);touch-action:none;cursor:grab}
+#stage:active{cursor:grabbing}
+.controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:0 14px 14px}
+.btn{cursor:pointer;border:1px solid var(--edge);background:#fff;color:var(--ink);padding:9px 14px;border-radius:10px;font:600 13px/1 'Segoe UI',system-ui;letter-spacing:.02em;transition:.15s}
+.btn:hover{border-color:var(--crim);box-shadow:0 0 14px rgba(192,57,43,.2)}
+.btn.on{background:linear-gradient(180deg,#d24a3c,#c0392b);border-color:#c0392b;color:#fff}
+.rng{display:flex;align-items:center;gap:8px;font:600 12px ui-monospace,monospace;color:var(--dim)}
+input[type=range]{accent-color:var(--crim)}
+.readout{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--edge2);border-top:1px solid var(--edge);border-radius:0 0 16px 16px;overflow:hidden}
+.ro{background:var(--panel);padding:11px 14px}
+.ro .k{font:600 10px ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--dim)}
+.ro .v{font:700 19px ui-monospace,monospace;margin-top:3px;color:var(--ink)}
+.ro .v.g{color:var(--grn)} .ro .v.r{color:var(--crim)} .ro .v.a{color:var(--gold2)} .ro .v.c{color:var(--blue)}
+.honesty{margin-top:22px;display:grid;gap:10px}
+.hz{background:var(--panel);border:1px solid var(--edge);border-left-width:3px;border-radius:10px;padding:12px 15px}
+.hz.lit{border-left-color:var(--grn)} .hz.amb{border-left-color:var(--gold)}
+.hz h4{margin:0 0 4px;font:700 11px ui-monospace,monospace;letter-spacing:.16em}
+.hz.lit h4{color:var(--grn)} .hz.amb h4{color:var(--gold2)}
+.hz p{margin:0;color:#3d3746;font-size:13.5px}
+.law{margin-top:16px;text-align:center;color:var(--dim);font:italic 500 13px/1.5 Georgia,serif}
+.sig{margin-top:26px;text-align:center;color:var(--dim);font:600 11px ui-monospace,monospace;letter-spacing:.14em}
+.sig b{color:var(--ink)}
+#fail{display:none;position:fixed;left:12px;right:12px;bottom:12px;z-index:99;background:#2a0d0a;border:1px solid var(--crim);color:#ffd7d0;padding:12px;border-radius:8px;font:12px ui-monospace,monospace;white-space:pre-wrap}
+</style></head><body>
+<canvas id="bg"></canvas>
+<div class="desk">
+  <div class="dtag">⚖ <b>LILLITH</b> · Lady Justice · the ledger of who was paid less</div>
+  <h1>THE FAIR DIVISION <span class="drag">✋ DRAG THE CANVAS</span></h1>
+  <p class="sub">One cake, two people who want different parts of it — she loves the frosting end, he loves the fruit. Split it down the middle and both feel cheated. <b>Drag the cut</b> until each of them, by their OWN valuation, believes they got at least half. That line exists, and it is rarely the middle.</p>
+  <div class="tier"><span class="chip lit">◆ LIT</span><span class="chip amb">▲ AMBER</span></div>
+  <div class="card">
+    <div class="stagewrap"><canvas id="stage" width="900" height="440"></canvas></div>
+    <div class="controls"><button class="btn" id="envy">◎ find envy-free cut</button><button class="btn" id="reset">↺ new tastes</button></div>
+    <div class="readout"><div class="ro"><div class="k">cut position</div><div class="v" id="roCut">50%</div></div><div class="ro"><div class="k">Ann's share (her value)</div><div class="v" id="roA">—</div></div><div class="ro"><div class="k">Ben's share (his value)</div><div class="v" id="roB">—</div></div><div class="ro"><div class="k">the split</div><div class="v" id="roState">—</div></div></div>
+  </div>
+  <div class="honesty">
+    <div class="hz lit"><h4>◆ LIT — verified / checkable</h4><p>Each party has a valuation density over the cake (Ann's peaks at the frosting, Ben's at the fruit), normalised to total value 1. For a cut at x, Ann's share is the integral of her density on [0,x] and Ben's on [x,1] — computed live. An <b>envy-free</b> cut is one where each party values their own piece at ≥ ½ by their OWN valuation; because they value regions differently, such a cut exists and is generally NOT the midpoint (the instrument finds it). Real fair-division / cake-cutting theory (Steinhaus).</p></div>
+    <div class="hz amb"><h4>▲ AMBER — the figure</h4><p>Two parties and a one-dimensional cake with Gaussian tastes; real fair division handles many parties, indivisible goods, and strategic mis-reporting (a whole field). The core — a division fair by each party's own measure exists and is rarely the equal split — is the exact, honest content.</p></div>
+  </div>
+  <div class="law">LILLITH: she holds the scales in one hand and the blade in the other — the measure, and the will to act on it.</div>
+  <div class="sig">David Lee Wise / ROOT0 / TriPod LLC &nbsp;·&nbsp; with <b>AVAN</b></div>
+</div>
+<div id="fail"></div>
+<script>
+window.onerror=function(m,s,l,c,e){var f=document.getElementById('fail');if(f){f.style.display='block';f.textContent='⚠ '+m+' @'+l+':'+c;}};
+</script>
+<script>
+(function(){
+  var cv=document.getElementById('bg'); if(!cv) return;
+  function fallback(){var c=cv.getContext&&cv.getContext('2d');if(!c)return;
+    function f(){var w=cv.width=innerWidth,h=cv.height=innerHeight;var g=c.createRadialGradient(w*.5,h*.4,0,w*.5,h*.4,Math.max(w,h)*.9);g.addColorStop(0,'#f4f5f8');g.addColorStop(1,'#e6e8ee');c.fillStyle=g;c.fillRect(0,0,w,h);}f();addEventListener('resize',f);}
+  var gl;try{gl=cv.getContext('webgl',{antialias:true,alpha:false})||cv.getContext('experimental-webgl');}catch(e){}
+  if(!gl){fallback();return;}
+  // build the scales in 2D: post, fulcrum, beam, two pan rings
+  var stat=[], beam=[];
+  function line(a,arr){arr.push(a[0],a[1]);}
+  // post (vertical) + fulcrum triangle -> static
+  stat.push(0,-1.1, 0,0.35);
+  stat.push(-0.12,-1.1, 0.12,-1.1);
+  stat.push(-0.14,0.35, 0.14,0.35, 0.14,0.35, 0,0.62, 0,0.62,-0.14,0.35);
+  // beam + hangers + pan rings -> tilting group
+  beam.push(-1.0,0.5, 1.0,0.5);           // beam
+  beam.push(-1.0,0.5,-1.0,0.1, 1.0,0.5,1.0,0.1); // hangers
+  function ring(cx,cy,r){for(var i=0;i<24;i++){var a=i/24*6.283,b=(i+1)/24*6.283;beam.push(cx+Math.cos(a)*r,cy+Math.sin(a)*r,cx+Math.cos(b)*r,cy+Math.sin(b)*r);}}
+  ring(-1.0,0.0,0.28); ring(1.0,0.0,0.28);
+  var sb=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,sb);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(stat),gl.STATIC_DRAW);
+  var bb=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,bb);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(beam),gl.STATIC_DRAW);
+  var VS='attribute vec2 p;uniform float asp,ang,sc;void main(){vec2 q=p;float c=cos(ang),s=sin(ang);vec2 pivot=vec2(0.0,0.5);vec2 d=q-pivot;q=pivot+vec2(d.x*c-d.y*s,d.x*s+d.y*c);q*=sc;q.x/=asp;q.y+=0.15;gl_Position=vec4(q,0.0,1.0);}';
+  var VS2='attribute vec2 p;uniform float asp,sc;void main(){vec2 q=p*sc;q.x/=asp;q.y+=0.15;gl_Position=vec4(q,0.0,1.0);}';
+  var FS='precision mediump float;uniform float a;void main(){gl_FragColor=vec4(0.78,0.63,0.29,a);}';
+  function sh(ty,s){var o=gl.createShader(ty);gl.shaderSource(o,s);gl.compileShader(o);if(!gl.getShaderParameter(o,gl.COMPILE_STATUS))throw gl.getShaderInfoLog(o);return o;}
+  function prog(vs){var p=gl.createProgram();gl.attachShader(p,sh(gl.VERTEX_SHADER,vs));gl.attachShader(p,sh(gl.FRAGMENT_SHADER,FS));gl.linkProgram(p);if(!gl.getProgramParameter(p,gl.LINK_STATUS))throw'link';return p;}
+  var pB,pS;try{pB=prog(VS);pS=prog(VS2);}catch(e){fallback();return;}
+  gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);
+  var t0=null;
+  function frame(tm){requestAnimationFrame(frame);if(t0===null)t0=tm;var tt=(tm-t0)*0.001;
+    var w=cv.width=innerWidth,h=cv.height=innerHeight;gl.viewport(0,0,w,h);
+    gl.clearColor(0.937,0.941,0.953,1.0);gl.clear(gl.COLOR_BUFFER_BIT);var asp=w/h;
+    var tilt=Math.sin(tt*0.6)*0.09;
+    gl.useProgram(pS);gl.uniform1f(gl.getUniformLocation(pS,'asp'),asp);gl.uniform1f(gl.getUniformLocation(pS,'sc'),0.5);gl.uniform1f(gl.getUniformLocation(pS,'a'),0.16);
+    gl.bindBuffer(gl.ARRAY_BUFFER,sb);var aS=gl.getAttribLocation(pS,'p');gl.enableVertexAttribArray(aS);gl.vertexAttribPointer(aS,2,gl.FLOAT,false,0,0);gl.lineWidth(1);gl.drawArrays(gl.LINES,0,stat.length/2);
+    gl.useProgram(pB);gl.uniform1f(gl.getUniformLocation(pB,'asp'),asp);gl.uniform1f(gl.getUniformLocation(pB,'ang'),tilt);gl.uniform1f(gl.getUniformLocation(pB,'sc'),0.5);gl.uniform1f(gl.getUniformLocation(pB,'a'),0.2);
+    gl.bindBuffer(gl.ARRAY_BUFFER,bb);var aB=gl.getAttribLocation(pB,'p');gl.enableVertexAttribArray(aB);gl.vertexAttribPointer(aB,2,gl.FLOAT,false,0,0);gl.drawArrays(gl.LINES,0,beam.length/2);
+  }
+  requestAnimationFrame(frame);
+})();
+</script>
+<script>
+(function(){
+  var cv=document.getElementById('stage'); var ctx=cv&&cv.getContext('2d'); if(!ctx)return;
+  var DPR=Math.min(window.devicePixelRatio||1,2);
+  function size(){var w=cv.clientWidth||900;cv.width=Math.round(w*DPR);cv.height=Math.round((w*440/900)*DPR);}
+  size(); addEventListener('resize',size);
+  var env={cv:cv,ctx:ctx,DPR:DPR,W:function(){return cv.width/DPR;},H:function(){return cv.height/DPR;},
+    set:function(id,val,cls){var e=document.getElementById(id);if(e){e.textContent=val;if(cls!=null)e.className='v '+cls;}},
+    evt:function(e){var r=cv.getBoundingClientRect();var sx=(cv.width/DPR)/r.width, sy=(cv.height/DPR)/r.height;
+      var cx=(e.touches?e.touches[0].clientX:e.clientX), cy=(e.touches?e.touches[0].clientY:e.clientY);
+      return {x:(cx-r.left)*sx, y:(cy-r.top)*sy};}};
+  var t0=null, inited=false;
+  function loop(t){requestAnimationFrame(loop);if(t0===null)t0=t;env.t=(t-t0)*0.001;
+    if(!inited&&window.__INST__){inited=true;if(window.__INST__.init)window.__INST__.init(env);}
+    ctx.setTransform(DPR,0,0,DPR,0,0);
+    if(window.__INST__&&window.__INST__.draw)window.__INST__.draw(env);}
+  requestAnimationFrame(loop);
+})();
+</script>
+<script>
+  function onDrag(env,pick,move){var handle=null;
+    function down(e){e.preventDefault();var p=env.evt(e);handle=pick(p);if(handle!=null)move(handle,p);}
+    function mv(e){if(handle==null)return;e.preventDefault();move(handle,env.evt(e));}
+    function up(){handle=null;}
+    env.cv.addEventListener('pointerdown',down);env.cv.addEventListener('pointermove',mv);
+    window.addEventListener('pointerup',up);env.cv.addEventListener('touchstart',down,{passive:false});env.cv.addEventListener('touchmove',mv,{passive:false});window.addEventListener('touchend',up);
+  }
+
+(function(){
+  var cut=0.5, ENV, ac=0.3, bc=0.7;
+  function reroll(){ac=0.2+Math.random()*0.3;bc=0.55+Math.random()*0.3;}
+  reroll();
+  // valuation densities: Ann peaks at ac, Ben at bc (gaussians), normalised over [0,1]
+  function dens(cx,x){return Math.exp(-((x-cx)*(x-cx))/(2*0.04));}
+  function val(cx,lo,hi){var s=0,tot=0;for(var i=0;i<200;i++){var x=i/200,d=dens(cx,x);tot+=d;if(x>=lo&&x<hi)s+=d;}return s/tot;}
+  function findEnvy(){var best=0.5,bd=1e9;for(var g=0.02;g<0.98;g+=0.005){var a=val(ac,0,g),b=val(bc,g,1);var d=Math.abs(a-0.5)+Math.abs(b-0.5);if(d<bd){bd=d;best=g;}}return best;}
+  function refresh(){if(!ENV)return;var a=val(ac,0,cut),b=val(bc,cut,1);ENV.set('roCut',(cut*100).toFixed(0)+'%');
+    ENV.set('roA',(a*100).toFixed(0)+'%',a>=0.49?'g':'r');ENV.set('roB',(b*100).toFixed(0)+'%',b>=0.49?'g':'r');
+    var ok=a>=0.49&&b>=0.49;ENV.set('roState',ok?'envy-free — both feel fairly served':'someone feels cheated',ok?'g':'r');}
+  window.__INST__={init:function(env){ENV=env;
+    document.getElementById('envy').onclick=function(){cut=findEnvy();refresh();};
+    document.getElementById('reset').onclick=function(){reroll();refresh();};
+    onDrag(env,function(p){return 0;},function(i,p){cut=Math.max(0.03,Math.min(0.97,(p.x-40)/(env.W()-64)));refresh();});
+    refresh();},
+   draw:function(env){var c=env.ctx,w=env.W(),h=env.H();c.clearRect(0,0,w,h);
+     var x0=40,pw=w-64,y0=h*0.5;
+     function X(x){return x0+x*pw;}
+     // the cake with two valuation densities
+     c.strokeStyle='rgba(107,100,114,.3)';c.strokeRect(x0,y0-70,pw,140);
+     c.strokeStyle='#c0392b';c.lineWidth=2;c.beginPath();for(var i=0;i<=100;i++){var x=i/100;i?c.lineTo(X(x),y0-Math.min(60,dens(ac,x)*60)):c.moveTo(X(x),y0-Math.min(60,dens(ac,x)*60));}c.stroke();
+     c.strokeStyle='#3a6ea5';c.lineWidth=2;c.beginPath();for(var i=0;i<=100;i++){var x=i/100;i?c.lineTo(X(x),y0+Math.min(60,dens(bc,x)*60)):c.moveTo(X(x),y0+Math.min(60,dens(bc,x)*60));}c.stroke();
+     c.fillStyle='#c0392b';c.font='600 12px ui-monospace,monospace';c.textAlign='left';c.fillText('Ann values ↑',x0+4,y0-74);
+     c.fillStyle='#3a6ea5';c.fillText('Ben values ↓',x0+4,y0+86);
+     // the cut (draggable)
+     c.fillStyle='rgba(200,162,74,.12)';c.fillRect(x0,y0-70,X(cut)-x0,140);
+     c.strokeStyle='#c8a24a';c.lineWidth=3;c.beginPath();c.moveTo(X(cut),y0-80);c.lineTo(X(cut),y0+80);c.stroke();
+     c.fillStyle='#9c7a2a';c.font='700 12px ui-monospace,monospace';c.textAlign='center';c.fillText('✂ drag the cut',X(cut),y0-88);
+     c.fillStyle='#c0392b';c.textAlign='center';c.fillText('Ann ←',X(cut/2),y0-52);c.fillStyle='#3a6ea5';c.fillText('→ Ben',X(cut+(1-cut)/2),y0+58);
+     c.textAlign='left';
+   }};
+})();
+</script>
+</body></html>
