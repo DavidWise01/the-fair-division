@@ -1,0 +1,9 @@
+ROOT0-DLW-CHAIN-v1
+index : 1533
+slug  : the-fair-division
+seal  : 411cfe246736d3eaf47e9be7cd5d51fb4f6f98c06c767309edce96174c4fabf3
+prev  : 91905c03bdd2d11dfa638347292e4ba9b2d1d40a67250d283887feff66855ef8
+link  : f4d6c1e3f9ee4c428ff407c1ddcddc29d5fe80506a2d19950c9428e503b985b7
+head  : 2fdce552fc75d24241d0487ed7c15f2225e1d646a0432d9caf1ed6c119d1fb9c
+
+— the tether: link = sha256(index|slug|seal|prev). the chain head commits to the whole corpus.
