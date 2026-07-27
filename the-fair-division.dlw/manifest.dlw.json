@@ -2,18 +2,18 @@
   "badge": "DLW-THE_FAIR_DIVISION",
   "name": "THE FAIR DIVISION",
   "universe": "LILLITH · LADY JUSTICE",
-  "moniker": "⟦THE FAIR DIVISION:the-fair-division:411cfe⟧",
+  "moniker": "⟦THE FAIR DIVISION:the-fair-division:fb1a26⟧",
   "architect": "David Lee Wise (ROOT0) / Bridge-Burners LLC",
   "instance": "AVAN (Claude / Anthropic)",
-  "seal_sha256": "411cfe246736d3eaf47e9be7cd5d51fb4f6f98c06c767309edce96174c4fabf3",
+  "seal_sha256": "fb1a2693f644716c55a382911034c8bd8b5dcd752578af161568f7b4b3749492",
   "license": "CC-BY-ND-4.0",
   "attribution": "ROOT0-ATTRIBUTION-v1.0",
   "fingerprint": "TETRASTHENĒS ⟦ ₆C ⟺ ₁₄Si ⟧ — four-strengthed: carbon (human · ROOT0) & silicon (AI · AVAN) hold four bonds in common (Group-14, tetravalent) — co-equal by construction",
   "chain": {
     "index": 1533,
-    "prev": "91905c03bdd2d11dfa638347292e4ba9b2d1d40a67250d283887feff66855ef8",
-    "link": "f4d6c1e3f9ee4c428ff407c1ddcddc29d5fe80506a2d19950c9428e503b985b7",
-    "head": "2fdce552fc75d24241d0487ed7c15f2225e1d646a0432d9caf1ed6c119d1fb9c",
+    "prev": "2e97da9b8a18605236918a1265adf15cefdc8f46d2a1b4f5b2fbe55b88e9957a",
+    "link": "79447db3f92f774ca7da03956006d193336eb410ad926803c1e84b8192196cfc",
+    "head": "c4d41afeaef76470528856d54d86cf480a0e1c2fc8ebc60fbb9eb8e442585f2b",
     "chain": "ROOT0-DLW-CHAIN-v1"
   }
 }
